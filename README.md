@@ -1,5 +1,8 @@
 # shortest-path
 
+This project derives shamelessly from the article ```A Walkthrough of Dijkstra’s Algorithm (in JavaScript!)``` written by [_**Adrienne Johnson**_](https://medium.com/@adriennetjohnson/a-walkthrough-of-dijkstras-algorithm-in-javascript-e94b74192026).
+
+
 The goal is to find the shortest path between 2 nodes in a given graph.
 
 ## Algorithm
