@@ -15,3 +15,6 @@ Let the node at which we are starting be called the initial node. Let the distan
 - Otherwise, select the unvisited node that is marked with the smallest tentative distance, set it as the new "current node", and go back to step 3.
 
 When planning a route, it is actually not necessary to wait until the destination node is "visited" as above: the algorithm can stop once the destination node has the smallest tentative distance among all "unvisited" nodes (and thus could be selected as the next "current").
+
+
+<img src="./grapgh.jpg">
