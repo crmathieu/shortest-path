@@ -5,6 +5,39 @@ This project derives shamelessly from the article [A Walkthrough of Dijkstra’s
 
 The goal is to find the shortest path between 2 nodes in a given graph.
 
+Let’s say we are at _Fullstack Academy_ in New York, and we want to know the shortest possible path to _Cafe Grumpy_ (see diagram). The weight of the edge between each node and its neighbors represents the time it takes to walk from a node to the others.
+
+The graph can be represented by an adjacency list. Each node in the adjacency list points to an array of neighboring nodes, or in other words, the endpoint of every edge extending from that node. In a weighted graph, the adjacency list carries a second piece of information: the weight of each edge, or the cost of getting to that particular node.
+
+<img src="./graph.jpeg">
+
+in Go, a rough implementation may look like:
+```go
+type Edge struct {
+    toNode  *Node
+    weight  int
+}
+
+type Node struct {
+    name string
+    neighbors []Edge
+}
+
+type Graph struct {
+    nodes []Node
+    //adjacentList []Edge
+}
+```
+To add a node to the graph, we push it into the collection of node values, which will help us iterate through them later, and we add a new entry in the adjacency list, setting its value to an empty array.
+
+```go
+  func (g *Graph) addNode(node string, edges Edge...) {
+    this.nodes.push(node); 
+    this.adjacencyList[node] = [];
+  }
+```
+
+
 ## Algorithm
 
 Let the node at which we are starting be called the initial node. Let the distance of node Y be the distance from the initial node to Y. Dijkstra's algorithm will assign some initial distance values and will try to improve them step by step.
@@ -20,4 +53,3 @@ Let the node at which we are starting be called the initial node. Let the distan
 When planning a route, it is actually not necessary to wait until the destination node is "visited" as above: the algorithm can stop once the destination node has the smallest tentative distance among all "unvisited" nodes (and thus could be selected as the next "current").
 
 
-<img src="./graph.jpeg">
