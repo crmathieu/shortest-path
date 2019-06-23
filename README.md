@@ -54,9 +54,9 @@ func (g *Graph) addEdge(node1, node2 *Node, weight int) {
 ## The Approach
 In this simple example, it would be easy enough to scan the diagram and add some numbers to figure it out, but if I wanted to venture out of my neighborhood to a coffeeshop in, say, Midtown, the permutations of paths there would be much harder to calculate myself.
 
-That’s where Dijkstra’s Algorithm comes in. Before I get into any code, let’s get a basic idea of how it’ll work:
+That’s where Dijkstra’s Algorithm comes in. Here is the basic idea of how it works:
 
-- Move to a node that we haven’t visited, choosing the fastest node to get to first.
+- Move to a node that we haven’t visited, choosing the closest node to get to first.
 - At that node, check how long it will take us to get to each of its neighboring nodes. Add the neighbor’s weight to the distance it took to get to the node we’re currently on. Keep in mind that we’re calculating the distance to reach those nodes before we visit them.
 - Check whether that calculated distance is shorter than the previously known shortest distance to get to that node. If it is shorter, update our records to reflect the new shortest distance. We’ll also add this node to our line of nodes to visit next. That line will be arranged in order of shortest calculated distance to reach.
 
