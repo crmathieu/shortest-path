@@ -35,16 +35,16 @@ To add a node to the graph, we push it into the collection of node values, which
 Create a graph
 ```go
 func NewGraph() *Graph {
-	neighbors := make(map[int][]Edge)
-	nodes := make(map[int]*Node)
-	return &Graph{0, nodes, neighbors}
+  neighbors := make(map[int][]Edge)
+  nodes := make(map[int]*Node)
+  return &Graph{0, nodes, neighbors}
 }
 ```
 
 Create a Node
 ```go
 func createNode(name string) *Node {
-	return &Node{name, 0} //, MAXINT}
+  return &Node{name, 0} //, MAXINT}
 }
 ```
 Add a node to the graph
