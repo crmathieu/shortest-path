@@ -5,7 +5,6 @@ const MAXINT = 2147483647 // 0x7fffffff
 type Node struct {
 	name string
 	id    int
-	cumul int
 }
 
 type Edge struct {
@@ -13,43 +12,33 @@ type Edge struct {
     weight  int
 }
 
-func NewGraph() *Graph {
-	adj := make(map[string][]Edge)
-	dist := make(map[string]int)
-	nodes := make(map[int]*Node)
-	return &Graph{&Node{}, &Node{}, 0, nodes, adj, dist}
-}
-
 type Graph struct {
-	startNode, endNode  		*Node
-	cnt 			int
-	nodes 			map[int]*Node
-	adjacentList 	map[string][]Edge
-	distances		map[string]int
+	startNode, endNode  *Node
+	cnt 				int
+	nodes 				map[int]*Node
+	neighborsList 		map[int][]Edge
 }
 
+func NewGraph() *Graph {
+	adj := make(map[int][]Edge)
+	nodes := make(map[int]*Node)
+	return &Graph{&Node{}, &Node{}, 0, nodes, adj}
+}
 
 func createNode(name string) *Node {
-	return &Node{name, 0, MAXINT}
+	return &Node{name, 0} //, MAXINT}
 }
 
 func (g *Graph) addNode(node *Node) {
 	node.id = g.cnt
 	g.cnt++
 	g.nodes[node.id] = node
-	g.adjacentList[node.name] = []Edge{}
-	g.distances[node.name] = MAXINT
+	g.neighborsList[node.id] = []Edge{}
 }
 
 func (g *Graph) addEdge(node1, node2 *Node, weight int) {
-	g.adjacentList[node1.name] = append(g.adjacentList[node1.name], Edge{node2, weight})
-	g.adjacentList[node2.name] = append(g.adjacentList[node2.name], Edge{node1, weight})
-}
-
-func (g *Graph) setPath(startingNode, finishingNode *Node) {
-	g.startNode = startingNode
-	g.endNode = finishingNode
-	startingNode.cumul = 0
+	g.neighborsList[node1.id] = append(g.neighborsList[node1.id], Edge{node2, weight})
+	g.neighborsList[node2.id] = append(g.neighborsList[node2.id], Edge{node1, weight})
 }
 
 var fullstack, starbucks, insomnia, cafe, dig, dubliner *Node

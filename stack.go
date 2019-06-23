@@ -1,12 +1,12 @@
 package main
 
-type Item struct {
+type StackItem struct {
 	Value int
 }
 
 // Stack is a basic LIFO stack that resizes as needed.
 type Stack2 struct {
-	items []*Item
+	items []*StackItem
 	count int
 }
 
@@ -16,7 +16,7 @@ type Stack struct {
 }
 
 // Push adds a node to the stack.
-func (s *Stack) Push(n *Item) {
+func (s *Stack) Push(n *StackItem) {
 	s.items = append(s.items, n)
 	s.count++
 }
