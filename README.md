@@ -43,7 +43,7 @@ func (g *Graph) addNode(node *Node) {
 ```
 
 To add edges to a node, we simply need to specify the weight between 2 nodes
-```
+```go
 func (g *Graph) addEdge(node1, node2 *Node, weight int) {
   g.neighborsList[node1.id] = append(g.neighborsList[node1.id], Edge{node2, weight})
   g.neighborsList[node2.id] = append(g.neighborsList[node2.id], Edge{node1, weight})
