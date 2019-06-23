@@ -19,23 +19,36 @@ func (g *Graph) findPathWithDijkstra(startNode, endNode *Node) string {
 
 	// We add our starting node to the priority queue to get things kicked off
 	startNode.cumul = 0
-	pq.Push(startNode)
+	pq.Insert(startNode)
 
+	// We access the first element in the queue and start checking its neighbors, 
+	// which we find using the adjacent list we made at the very beginning. We 
+	// add the neighbor’s weight to the time it took to get to the node we’re on.	
 	for ; !pq.isEmpty()	; {
-		shortestStep := pq.Dequeue()
+		shortestStep := pq.DequeueFirst()
 		currentNode := shortestStep
 
 		for _, neighbor := range g.adjacentList[currentNode.name] {
 			vtime := times[currentNode.id] + neighbor.weight
 
+			// Then we check if the calculated time is less than the 
+			// time we currently have on file for this neighbor. If it is, 
+			// then we update our times, we add this step to our backtrace, 
+			// and we add the neighbor to our priority queue!
 			if (vtime < times[neighbor.toNode.id]) {
 				times[neighbor.toNode.id] = vtime;
 				backtrace[neighbor.toNode.id] = currentNode.id;
 				neighbor.toNode.cumul = vtime
-				pq.Push(neighbor.toNode);
+				pq.Insert(neighbor.toNode);
 			}
 		}
 	}	  
+
+	// Once the end of our queue has been reached, all we have to do 
+	// is look through our backtrace to find the steps that will lead 
+	// us to the target node. We can look up target node in our 'times' 
+	// object to find out just how long it will take to get there, 
+	// knowing that it’s the quickest route.
 
 	path := NewQueue()
 	path.Push(endNode)
@@ -46,9 +59,11 @@ func (g *Graph) findPathWithDijkstra(startNode, endNode *Node) string {
 		path.Prepend(g.nodes[backtrace[lastStep.id]])
 		lastStep = g.nodes[backtrace[lastStep.id]]
 	}
+
+	// that's it
 	output := ""
 	for ;!path.isEmpty(); {
-		node := path.Pop()
+		node := path.DequeueFirst()
 		output = output + fmt.Sprintf(">(%v, %v)", node.name, node.cumul)
 	}  
   	return fmt.Sprintf("Path is '%s' and time is '%v'\n", output, times[endNode.id])
@@ -64,6 +79,6 @@ func main() {
 	dubliner 	= createNode("Dubliner")
 
 	g := NewGraph()
-	g.Build()
+	g.BuildGraph()
 	fmt.Println(g.findPathWithDijkstra(dubliner, cafe))
 }
