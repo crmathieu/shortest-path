@@ -81,5 +81,5 @@ func main() {
 
 	g := NewGraph()
 	g.BuildGraph()
-	fmt.Println(g.findPathWithDijkstra(insomnia, dig))
+	fmt.Println(g.findPathWithDijkstra(fullstack, cafe))
 }
