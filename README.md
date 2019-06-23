@@ -44,7 +44,7 @@ func NewGraph() *Graph {
 Create a Node
 ```go
 func createNode(name string) *Node {
-  return &Node{name, 0} //, MAXINT}
+  return &Node{name, 0}
 }
 ```
 Add a node to the graph
