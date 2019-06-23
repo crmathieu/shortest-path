@@ -1,35 +1,39 @@
 package main
 
 type Pqueue struct { 
-    Items []Node
+    Items []*Node
 } 
 
-func NewQueue() *Pqueue { 
+func NewPqueue() *Pqueue { 
     return &Pqueue{} 
 } 
- 
-func (s *Pqueue) Push(item Node) {
-    if len(s.Items) == 0 { 
-        s.Items = append(s.Items, item)
-    } else {
-        for k, v := range(s.Items) {
-            if v.cumul > item.cumul {
-                s.Items = s.Items[:k]
+
+// insert item in queue based on priority (lower number is higher priority)
+func (pq *Pqueue) Push(item *Node) {
+    if len(pq.Items) > 0 { 
+        for k, v := range(pq.Items) {
+            if item.cumul < v.cumul  {
+                w := append(pq.Items[:k], item)
+                pq.Items = append(w, pq.Items[k:]...)
+                return
             }
         }
     } 
+    pq.Items = append(pq.Items, item)
 } 
  
-func (s *Queue) Pop() interface{} { 
+func (pq *Pqueue) isEmpty() bool {
+    if len(pq.Items) == 0 {
+        return true
+    }
+    return false
+}
+
+// remove 1st item in queue and return it
+func (s *Pqueue) Dequeue() *Node { 
     defer func() { 
         s.Items = s.Items[1:] 
     }() 
     return s.Items[0] 
 } 
  
-func (s *Queue) IsEmpty() bool { 
-    if len(s.Items) == 0 { 
-        return true 
-    } 
-    return false 
-} 
