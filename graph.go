@@ -13,20 +13,19 @@ type Edge struct {
 }
 
 type Graph struct {
-	startNode, endNode *Node
 	cnt                int
 	nodes              map[int]*Node
 	neighborsList      map[int][]Edge
 }
 
 func NewGraph() *Graph {
-	adj := make(map[int][]Edge)
+	neighbors := make(map[int][]Edge)
 	nodes := make(map[int]*Node)
-	return &Graph{&Node{}, &Node{}, 0, nodes, adj}
+	return &Graph{0, nodes, neighbors}
 }
 
 func createNode(name string) *Node {
-	return &Node{name, 0} //, MAXINT}
+	return &Node{name, 0}
 }
 
 func (g *Graph) addNode(node *Node) {

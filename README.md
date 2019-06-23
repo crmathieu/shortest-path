@@ -24,7 +24,6 @@ type Node struct {
 }
 
 type Graph struct {
-  startNode, endNode  *Node
   cnt                 int
   nodes               map[int]*Node
   neighborsList       map[int][]Edge
@@ -33,6 +32,22 @@ type Graph struct {
 ```
 To add a node to the graph, we push it into the collection of node values, which will help us iterate through them later, and we add a new entry in the neighbors list, setting its value to an empty array.
 
+Create a graph
+```go
+func NewGraph() *Graph {
+	neighbors := make(map[int][]Edge)
+	nodes := make(map[int]*Node)
+	return &Graph{0, nodes, neighbors}
+}
+```
+
+Create a Node
+```go
+func createNode(name string) *Node {
+	return &Node{name, 0} //, MAXINT}
+}
+```
+Add a node to the graph
 ```go
 func (g *Graph) addNode(node *Node) {
   node.id = g.cnt
