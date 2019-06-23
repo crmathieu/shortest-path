@@ -25,9 +25,9 @@ type Node struct {
 
 type Graph struct {
 	startNode, endNode  *Node
-	cnt 				        int
-	nodes 				      map[int]*Node
-	neighborsList 		  map[int][]Edge
+	cnt                 int
+	nodes               map[int]*Node
+	neighborsList       map[int][]Edge
 }
 
 ```
