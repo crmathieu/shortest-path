@@ -53,3 +53,14 @@ Let the node at which we are starting be called the initial node. Let the distan
 When planning a route, it is actually not necessary to wait until the destination node is "visited" as above: the algorithm can stop once the destination node has the smallest tentative distance among all "unvisited" nodes (and thus could be selected as the next "current").
 
 
+//////////
+The Approach
+In this simple example, it would be easy enough to scan the diagram and add some numbers to figure it out, but if I wanted to venture out of my neighborhood to a coffeeshop in, say, Midtown, the permutations of paths there would be much harder to calculate myself.
+
+That’s where Dijkstra’s Algorithm comes in. Before I get into any code, let’s get a basic idea of how it’ll work:
+
+Move to a node that we haven’t visited, choosing the fastest node to get to first.
+At that node, check how long it will take us to get to each of its neighboring nodes. Add the neighbor’s weight to the time it took to get to the node we’re currently on. Keep in mind that we’re calculating the time to reach those nodes before we visit them.
+Check whether that calculated time is faster than the previously known shortest time to get to that node. If it is faster, update our records to reflect the new shortest time. We’ll also add this node to our line of nodes to visit next. That line will be arranged in order of shortest calculated time to reach.
+By calculating and continually updating the shortest time to reach each node on the graph, the algorithm compiles the shortest path to the endpoint.
+
