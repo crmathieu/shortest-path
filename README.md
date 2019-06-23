@@ -19,15 +19,15 @@ type Edge struct {
 }
 
 type Node struct {
-	name string
-	id    int
+  name string
+  id    int
 }
 
 type Graph struct {
-	startNode, endNode  *Node
-	cnt                 int
-	nodes               map[int]*Node
-	neighborsList       map[int][]Edge
+  startNode, endNode  *Node
+  cnt                 int
+  nodes               map[int]*Node
+  neighborsList       map[int][]Edge
 }
 
 ```
@@ -35,18 +35,18 @@ To add a node to the graph, we push it into the collection of node values, which
 
 ```go
 func (g *Graph) addNode(node *Node) {
-	node.id = g.cnt
-	g.cnt++
-	g.nodes[node.id] = node
-	g.neighborsList[node.id] = []Edge{}
+  node.id = g.cnt
+  g.cnt++
+  g.nodes[node.id] = node
+  g.neighborsList[node.id] = []Edge{}
 }
 ```
 
 To add edges to a node, we simply need to specify the weight between 2 nodes
 ```
 func (g *Graph) addEdge(node1, node2 *Node, weight int) {
-	g.neighborsList[node1.id] = append(g.neighborsList[node1.id], Edge{node2, weight})
-	g.neighborsList[node2.id] = append(g.neighborsList[node2.id], Edge{node1, weight})
+  g.neighborsList[node1.id] = append(g.neighborsList[node1.id], Edge{node2, weight})
+  g.neighborsList[node2.id] = append(g.neighborsList[node2.id], Edge{node1, weight})
 }
 
 ```

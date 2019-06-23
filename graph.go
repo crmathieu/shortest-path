@@ -4,19 +4,19 @@ const MAXINT = 2147483647 // 0x7fffffff
 
 type Node struct {
 	name string
-	id    int
+	id   int
 }
 
 type Edge struct {
-    toNode  *Node
-    weight  int
+	toNode *Node
+	weight int
 }
 
 type Graph struct {
-	startNode, endNode  *Node
-	cnt 				int
-	nodes 				map[int]*Node
-	neighborsList 		map[int][]Edge
+	startNode, endNode *Node
+	cnt                int
+	nodes              map[int]*Node
+	neighborsList      map[int][]Edge
 }
 
 func NewGraph() *Graph {
@@ -51,15 +51,14 @@ func (g *Graph) BuildGraph() {
 	g.addNode(cafe)
 	g.addNode(dig)
 	g.addNode(dubliner)
-	
-	g.addEdge(fullstack, starbucks, 6);
-	g.addEdge(fullstack, dig, 7);
-	g.addEdge(fullstack, dubliner, 2);
-	g.addEdge(dig, dubliner, 4);
-	g.addEdge(dig, cafe, 9);
-	g.addEdge(cafe, insomnia, 5);
-	g.addEdge(insomnia, starbucks, 6);
-	g.addEdge(insomnia, dubliner, 7);
-	g.addEdge(starbucks, dubliner, 3);
-}
 
+	g.addEdge(fullstack, starbucks, 6)
+	g.addEdge(fullstack, dig, 7)
+	g.addEdge(fullstack, dubliner, 2)
+	g.addEdge(dig, dubliner, 4)
+	g.addEdge(dig, cafe, 9)
+	g.addEdge(cafe, insomnia, 5)
+	g.addEdge(insomnia, starbucks, 6)
+	g.addEdge(insomnia, dubliner, 7)
+	g.addEdge(starbucks, dubliner, 3)
+}

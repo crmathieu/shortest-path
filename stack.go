@@ -26,15 +26,15 @@ func (s *Stack) Pop() interface{} { //*Item {
 	if s.count == 0 {
 		return nil
 	}
-    defer func() { 
+	defer func() {
 		s.count--
-        s.items = s.items[:s.count] 
-    }() 
-	return s.items[s.count-1] 
+		s.items = s.items[:s.count]
+	}()
+	return s.items[s.count-1]
 }
 
 // create a stack
 func NewStack() *Stack {
-//	return &Stack{[]*Item{}, 0}
+	//	return &Stack{[]*Item{}, 0}
 	return &Stack{}
 }
