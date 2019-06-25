@@ -23,7 +23,6 @@ func NewGraph() *Graph {
 	return &Graph{nodes, neighbors}
 }
 
-//func (g *Graph) addNode(node *Node) {
 func (g *Graph) addNode(nodename string, nodeid int) { //*Node {
 
 	node := Node{}
@@ -38,7 +37,6 @@ func (g *Graph) addEdge(node1, node2 *Node, weight int) {
 	g.neighborsList[node2.id] = append(g.neighborsList[node2.id], Edge{node1, weight})
 }
 
-//var fullstack, starbucks, insomnia, cafe, dig, dubliner *Node
 var jGraph *jsonGraph 
 
 func (g *Graph) buildGraph(filename string) {
