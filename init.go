@@ -20,25 +20,6 @@ type jsonNeighbors struct {
 	Weight		int				`json:"weight"`
 }
 
-/*
-            "name": "Fullstack",
-            "id": 0,
-            "neighbors": [
-                {
-                    "id": 1,
-                    "weight": 7
-                },
-                {
-                    "id": 2,
-                    "weight": 2
-                },
-                {
-                    "id": 3,
-                    "weight": 2
-                }
-            ]
-*/
-
 func ReadJsonGraph(filename string) *jsonGraph {
 
 	var jgraph jsonGraph
