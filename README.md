@@ -53,15 +53,10 @@ Here we use nodeId 0 and 5, which according to our graphdefinition represent res
 
 _buildGraph_ is in charge of creating the data structure that holds the graph data. It uses 2 loops where in the first loop, the nodes map is populated. In the second loop, the relationships between nodes are entered using the neighborsList map.  
 
-```
+## The Dijkstra Approach
 
-## The Approach
-In this simple example, it would be easy enough to scan the diagram and add some numbers to figure it out, but if I wanted to venture out of my neighborhood to a coffeeshop in, say, Midtown, the permutations of paths there would be much harder to calculate myself.
-
-That’s where Dijkstra’s Algorithm comes in. Here is the basic idea of how it works:
-
-- Move to a node that we haven’t visited, choosing the closest node to get to first.
-- At that node, check how long it will take us to get to each of its neighboring nodes. Add the neighbor’s weight to the distance it took to get to the node we’re currently on. Keep in mind that we’re calculating the distance to reach those nodes before we visit them.
+- Move to a node that has not been visited, choosing the closest node to get to first.
+- At that node, check how far each of its neighboring nodes are. Add the neighbor’s weight to the distance it took to get to the node we’re currently on. Keep in mind that we’re calculating the distance to reach those nodes before we visit them.
 - Check whether that calculated distance is shorter than the previously known shortest distance to get to that node. If it is shorter, update our records to reflect the new shortest distance. We’ll also add this node to our line of nodes to visit next. That line will be arranged in order of shortest calculated distance to reach.
 
 By calculating and continually updating the shortest distance to reach each node on the graph, the algorithm compiles the shortest path to the endpoint.
