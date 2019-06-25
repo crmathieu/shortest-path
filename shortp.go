@@ -54,15 +54,12 @@ func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) string {
 	// object to find out just how long it will take to get there,
 	// knowing that it’s the quickest route.
 
-	path := NewQueue()
 	lastStep := g.nodes[endNodeID]
-	path.Push(lastStep)
 	output := ""
 
 	for lastStep.id != startNodeID {
 		output = fmt.Sprintf("> %v ", lastStep.name) + output
 		lastStep = g.nodes[backtrace[lastStep.id]]
-		path.Prepend(lastStep)
 	}
 	output = fmt.Sprintf("%v ", g.nodes[startNodeID].name) + output
 
