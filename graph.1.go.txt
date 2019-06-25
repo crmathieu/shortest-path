@@ -13,7 +13,7 @@ type Edge struct {
 }
 
 type Graph struct {
-//	cnt                int
+	cnt                int
 	nodes              map[int]*Node
 	neighborsList      map[int][]Edge
 }
@@ -22,22 +22,18 @@ func NewGraph(filename string) *Graph {
 	neighbors := make(map[int][]Edge)
 	nodes := make(map[int]*Node)
 
-//	return &Graph{0, nodes, neighbors}
-	return &Graph{nodes, neighbors}
+	return &Graph{0, nodes, neighbors}
 }
 
 func createNode(name string) *Node {
 	return &Node{name, 0}
 }
 
-//func (g *Graph) addNode(node *Node) {
-func (g *Graph) addNode(nodename string, nodeid int) *Node {
-
-	node := Node{}
-	node.id = nodeid
-	g.nodes[node.id] = &node
+func (g *Graph) addNode(node *Node) {
+	node.id = g.cnt
+	g.cnt++
+	g.nodes[node.id] = node
 	g.neighborsList[node.id] = []Edge{}
-	return &node
 }
 
 func (g *Graph) addEdge(node1, node2 *Node, weight int) {
@@ -46,21 +42,10 @@ func (g *Graph) addEdge(node1, node2 *Node, weight int) {
 }
 
 var fullstack, starbucks, insomnia, cafe, dig, dubliner *Node
-var jGraph *jsonGraph 
+//var jGraph *jsonGraph 
 
-func (g *Graph) buildGraph(filename string) {
 
-	jGraph = ReadJsonGraph(filename)
-	for _, v := range(jGraph.Nodes) {
-		node := g.addNode(v.Name, v.Id)
-		for g := range v.Neighbors {
-			g.addEdge(node, &Node{})
-		}
-	}
-}
-
-/*
-func (g *Graph) BuildGraph2() {
+func (g *Graph) BuildGraph() {
 
 	g.addNode(fullstack)
 	g.addNode(starbucks)
@@ -79,4 +64,3 @@ func (g *Graph) BuildGraph2() {
 	g.addEdge(insomnia, dubliner, 7)
 	g.addEdge(starbucks, dubliner, 3)
 }
-*/

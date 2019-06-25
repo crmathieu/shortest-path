@@ -34,8 +34,8 @@ func (g *Graph) findPathWithDijkstra(startNode, endNode *Node) string {
 		for _, neighbor := range g.neighborsList[currentNode.id] {
 			newDistance := distances[currentNode.id] + neighbor.weight
 
-			// Then we check if the calculated time is less than the
-			// time we currently have on file for this neighbor. If it is,
+			// Then we check if the calculated distance is less than the
+			// distance we currently have on file for this neighbor. If it is,
 			// then we update our distances, we add this step to our backtrace,
 			// and we add the neighbor to our priority queue!
 			if newDistance < distances[neighbor.toNode.id] {
@@ -79,7 +79,7 @@ func main() {
 	dig = createNode("Dig Inn")
 	dubliner = createNode("Dubliner")
 
-	g := NewGraph()
-	g.BuildGraph()
+	g := NewGraph("./graphdefinition.json")
+	//g.BuildGraph()
 	fmt.Println(g.findPathWithDijkstra(fullstack, cafe))
 }
