@@ -11,6 +11,136 @@ The graph can be represented by a neighbors map. Each key in the neighbors list 
 
 <img src="./graph.jpeg">
 
+To represent this graph we choose to use a json definition with the following declarations:
+```go
+type jsonGraph struct {
+	Nodes      []jsonNode       `json:"nodes"`
+}
+
+type jsonNode struct {
+	Name       string           `json:"name"`
+	Id         int              `json:"id"`
+	Neighbors  []jsonNeighbors  `json:"neighbors"`
+}
+
+type jsonNeighbors struct {
+	Id         int              `json:"id"`
+	Weight     int              `json:"weight"`
+}
+```
+
+and the data can be laid out as:
+```json
+{
+    "nodes": [
+        {
+            "name": "Fullstack",
+            "id": 0,
+            "neighbors": [
+                {
+                    "id": 1,
+                    "weight": 7
+                },
+                {
+                    "id": 2,
+                    "weight": 2
+                },
+                {
+                    "id": 3,
+                    "weight": 6
+                }
+            ]
+        },
+        {
+            "name": "Dig Inn",
+            "id": 1,
+            "neighbors": [
+                {
+                    "id": 0,
+                    "weight": 7
+                },
+                {
+                    "id": 2,
+                    "weight": 4
+                },
+                {
+                    "id": 5,
+                    "weight": 9
+                }
+            ]
+        },
+        {
+            "name": "Dubliner",
+            "id": 2,
+            "neighbors": [
+                {
+                    "id": 0,
+                    "weight": 2
+                },
+                {
+                    "id": 1,
+                    "weight": 4
+                },
+                {
+                    "id": 3,
+                    "weight": 3
+                }
+            ]
+        },
+        {
+            "name": "Starbucks",
+            "id": 3,
+            "neighbors": [
+                {
+                    "id": 0,
+                    "weight": 6
+                },
+                {
+                    "id": 2,
+                    "weight": 3
+                },
+                {
+                    "id": 4,
+                    "weight": 6
+                }
+            ]
+        },
+        {
+            "name": "Cafe Grumpy",
+            "id": 5,
+            "neighbors": [
+                {
+                    "id": 1,
+                    "weight": 9
+                },
+                {
+                    "id": 4,
+                    "weight": 5
+                }
+            ]
+        },
+        {
+            "name": "Insomnia Cookies",
+            "id": 4,
+            "neighbors": [
+                {
+                    "id": 5,
+                    "weight": 5
+                },
+                {
+                    "id": 2,
+                    "weight": 7
+                },
+                {
+                    "id": 3,
+                    "weight": 6
+                }
+            ]
+        }
+    ]
+}
+```
+
 in Go, a rough implementation may look like:
 ```go
 type Edge struct {
