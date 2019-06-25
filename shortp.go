@@ -13,8 +13,10 @@ func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) string {
 
 	pq := NewPqueue()
 
+	// initialize the distance of the source node as 0
 	distances[startNodeID] = 0
 
+	// and the other distances to MAXINT
 	for _, v := range g.nodes {
 		if v.id != startNodeID {
 			distances[v.id] = MAXINT
@@ -55,18 +57,16 @@ func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) string {
 	path := NewQueue()
 	lastStep := g.nodes[endNodeID]
 	path.Push(lastStep)
+	output := ""
 
 	for lastStep.id != startNodeID {
-		path.Prepend(g.nodes[backtrace[lastStep.id]])
+		output = fmt.Sprintf("> %v ", lastStep.name) + output
 		lastStep = g.nodes[backtrace[lastStep.id]]
+		path.Prepend(lastStep)
 	}
+	output = fmt.Sprintf("%v ", g.nodes[startNodeID].name) + output
 
 	// that's it
-	output := ""
-	for !path.isEmpty() {
-		node := path.DequeueFirst()
-		output = output + fmt.Sprintf("> %v ", node.name)
-	}
 	return fmt.Sprintf("Path is '%s' and distance is '%v'\n", output, distances[endNodeID])
 }
 
