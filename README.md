@@ -24,7 +24,6 @@ type Node struct {
 }
 
 type Graph struct {
-  cnt                 int
   nodes               map[int]*Node
   neighborsList       map[int][]Edge
 }
@@ -32,37 +31,27 @@ type Graph struct {
 ```
 To add a node to the graph, we push it into the collection of node values, which will help us iterate through them later, and we add a new entry in the neighbors list, setting its value to an empty array.
 
-Create a graph
+Create an empty graph
 ```go
 func NewGraph() *Graph {
   neighbors := make(map[int][]Edge)
   nodes := make(map[int]*Node)
-  return &Graph{0, nodes, neighbors}
+  return &Graph{nodes, neighbors}
 }
 ```
+Then from reading the graphdefinition.json file which contains the relationship between each node and their neighbors, we can build the graph using the buildGraph function.
 
-Create a Node
+The code is
 ```go
-func createNode(name string) *Node {
-  return &Node{name, 0}
+func main() {
+	g := NewGraph()
+	g.buildGraph("./graphdefinition.json")
+	fmt.Println(g.findPathWithDijkstra(0, 5))
 }
 ```
-Add a node to the graph
-```go
-func (g *Graph) addNode(node *Node) {
-  node.id = g.cnt
-  g.cnt++
-  g.nodes[node.id] = node
-  g.neighborsList[node.id] = []Edge{}
-}
-```
+Here we use nodeId 0 and 5, which according to our graphdefinition represent respectively the "fullstack" and "Cafe Grumpy" nodes. We find the value **14** which corresponds to the shortest possible distance.
 
-To add edges to a node, we simply need to specify the weight between 2 nodes
-```go
-func (g *Graph) addEdge(node1, node2 *Node, weight int) {
-  g.neighborsList[node1.id] = append(g.neighborsList[node1.id], Edge{node2, weight})
-  g.neighborsList[node2.id] = append(g.neighborsList[node2.id], Edge{node1, weight})
-}
+_buildGraph_ is in charge of creating the data structure that holds the graph data. It uses 2 loops where in the first loop, the nodes map is populated. In the second loop, the relationships between nodes are entered using the neighborsList map.  
 
 ```
 
