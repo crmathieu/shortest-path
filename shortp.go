@@ -6,7 +6,6 @@ import (
 
 // findPathWithDijkstra - find the shortest path using the Dijsktra algorithm
 
-//func (g *Graph) findPathWithDijkstra(startNode, endNode *Node) string {
 func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) string {
 
 	distances := make(map[int]int)
@@ -72,14 +71,6 @@ func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) string {
 }
 
 func main() {
-
-	/*fullstack = createNode("Fullstack")
-	starbucks = createNode("Starbucks")
-	insomnia = createNode("Insomnia Cookies")
-	cafe = createNode("Cafe Grumpy")
-	dig = createNode("Dig Inn")
-	dubliner = createNode("Dubliner")
-*/
 	g := NewGraph()
 	g.buildGraph("./graphdefinition.json")
 	fmt.Println(g.findPathWithDijkstra(0, 5))
