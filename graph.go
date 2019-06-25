@@ -42,10 +42,13 @@ var jGraph *jsonGraph
 func (g *Graph) buildGraph(filename string) {
 
 	jGraph = ReadJsonGraph(filename)
+
+	// build nodes map
 	for _, v := range(jGraph.Nodes) {
 		g.addNode(v.Name, v.Id)
 	}
 
+	// then build neighborsList map
 	for _, v := range(jGraph.Nodes) {
 		for _, z := range v.Neighbors {
 			g.addEdge(g.nodes[v.Id], g.nodes[z.Id], z.Weight)
