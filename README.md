@@ -7,9 +7,139 @@ The goal is to find the shortest path between 2 nodes in a given graph.
 
 Let’s say we are at _Fullstack Academy_ in New York, and we want to know the shortest possible path to _Cafe Grumpy_ (see diagram). The weight of the edge between each node and its neighbors represents the distance it takes to walk from a node to the others.
 
-The graph can be represented by a neighbors map. Each key in the neighbors list points to an array of edges extending from the node corresponding to the key. In a weighted graph, the neighbors list carries a second piece of information: the weight of each edge, or the cost of getting to that particular node.
+The graph can be represented by a neighbors map. Each key in the neighbors list points to an array of edges extending from the node corresponding to the key. In a weighted graph, the neighbors list carries a second piece of information: the weight of each edge, or the cost of getting to that particular node. The numbers in red inside each node represent the node's ID which is an arbitrary integer value we give to each node in order to easily differentiate them. 
 
 <img src="./graph.jpeg">
+
+To represent this graph we choose to use a json definition with the following declarations:
+```go
+type jsonGraph struct {
+	Nodes      []jsonNode       `json:"nodes"`
+}
+
+type jsonNode struct {
+	Name       string           `json:"name"`
+	Id         int              `json:"id"`
+	Neighbors  []jsonNeighbors  `json:"neighbors"`
+}
+
+type jsonNeighbors struct {
+	Id         int              `json:"id"`
+	Weight     int              `json:"weight"`
+}
+```
+
+and the data can be laid out as:
+```json
+{
+    "nodes": [
+        {
+            "name": "Fullstack",
+            "id": 0,
+            "neighbors": [
+                {
+                    "id": 1,
+                    "weight": 7
+                },
+                {
+                    "id": 2,
+                    "weight": 2
+                },
+                {
+                    "id": 3,
+                    "weight": 6
+                }
+            ]
+        },
+        {
+            "name": "Dig Inn",
+            "id": 1,
+            "neighbors": [
+                {
+                    "id": 0,
+                    "weight": 7
+                },
+                {
+                    "id": 2,
+                    "weight": 4
+                },
+                {
+                    "id": 5,
+                    "weight": 9
+                }
+            ]
+        },
+        {
+            "name": "Dubliner",
+            "id": 2,
+            "neighbors": [
+                {
+                    "id": 0,
+                    "weight": 2
+                },
+                {
+                    "id": 1,
+                    "weight": 4
+                },
+                {
+                    "id": 3,
+                    "weight": 3
+                }
+            ]
+        },
+        {
+            "name": "Starbucks",
+            "id": 3,
+            "neighbors": [
+                {
+                    "id": 0,
+                    "weight": 6
+                },
+                {
+                    "id": 2,
+                    "weight": 3
+                },
+                {
+                    "id": 4,
+                    "weight": 6
+                }
+            ]
+        },
+        {
+            "name": "Cafe Grumpy",
+            "id": 5,
+            "neighbors": [
+                {
+                    "id": 1,
+                    "weight": 9
+                },
+                {
+                    "id": 4,
+                    "weight": 5
+                }
+            ]
+        },
+        {
+            "name": "Insomnia Cookies",
+            "id": 4,
+            "neighbors": [
+                {
+                    "id": 5,
+                    "weight": 5
+                },
+                {
+                    "id": 2,
+                    "weight": 7
+                },
+                {
+                    "id": 3,
+                    "weight": 6
+                }
+            ]
+        }
+    ]
+}
+```
 
 in Go, a rough implementation may look like:
 ```go
@@ -24,7 +154,6 @@ type Node struct {
 }
 
 type Graph struct {
-  cnt                 int
   nodes               map[int]*Node
   neighborsList       map[int][]Edge
 }
@@ -32,47 +161,32 @@ type Graph struct {
 ```
 To add a node to the graph, we push it into the collection of node values, which will help us iterate through them later, and we add a new entry in the neighbors list, setting its value to an empty array.
 
-Create a graph
+Create an empty graph
 ```go
 func NewGraph() *Graph {
   neighbors := make(map[int][]Edge)
   nodes := make(map[int]*Node)
-  return &Graph{0, nodes, neighbors}
+  return &Graph{nodes, neighbors}
 }
 ```
+Then from reading the graphdefinition.json file which contains the relationship between each node and their neighbors, we can build the graph using the buildGraph function.
 
-Create a Node
+The code is
 ```go
-func createNode(name string) *Node {
-  return &Node{name, 0}
+func main() {
+	g := NewGraph()
+	g.buildGraph("./graphdefinition.json")
+	fmt.Println(g.findPathWithDijkstra(0, 5))
 }
 ```
-Add a node to the graph
-```go
-func (g *Graph) addNode(node *Node) {
-  node.id = g.cnt
-  g.cnt++
-  g.nodes[node.id] = node
-  g.neighborsList[node.id] = []Edge{}
-}
-```
+Here we use nodeId 0 and 5, which according to our graphdefinition represent respectively the "fullstack" and "Cafe Grumpy" nodes. We find the value **14** which corresponds to the shortest possible distance.
 
-To add edges to a node, we simply need to specify the weight between 2 nodes
-```go
-func (g *Graph) addEdge(node1, node2 *Node, weight int) {
-  g.neighborsList[node1.id] = append(g.neighborsList[node1.id], Edge{node2, weight})
-  g.neighborsList[node2.id] = append(g.neighborsList[node2.id], Edge{node1, weight})
-}
+_buildGraph_ is in charge of creating the data structure that holds the graph data. It uses 2 loops where in the first loop, the nodes map is populated. In the second loop, the relationships between nodes are entered using the neighborsList map.  
 
-```
+## The Dijkstra Approach
 
-## The Approach
-In this simple example, it would be easy enough to scan the diagram and add some numbers to figure it out, but if I wanted to venture out of my neighborhood to a coffeeshop in, say, Midtown, the permutations of paths there would be much harder to calculate myself.
-
-That’s where Dijkstra’s Algorithm comes in. Here is the basic idea of how it works:
-
-- Move to a node that we haven’t visited, choosing the closest node to get to first.
-- At that node, check how long it will take us to get to each of its neighboring nodes. Add the neighbor’s weight to the distance it took to get to the node we’re currently on. Keep in mind that we’re calculating the distance to reach those nodes before we visit them.
+- Move to a node that has not been visited, choosing the closest node to get to first.
+- At that node, check how far each of its neighboring nodes are. Add the neighbor’s weight to the distance it took to get to the node we’re currently on. Keep in mind that we’re calculating the distance to reach those nodes before we visit them.
 - Check whether that calculated distance is shorter than the previously known shortest distance to get to that node. If it is shorter, update our records to reflect the new shortest distance. We’ll also add this node to our line of nodes to visit next. That line will be arranged in order of shortest calculated distance to reach.
 
 By calculating and continually updating the shortest distance to reach each node on the graph, the algorithm compiles the shortest path to the endpoint.

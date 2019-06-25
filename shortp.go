@@ -6,23 +6,25 @@ import (
 
 // findPathWithDijkstra - find the shortest path using the Dijsktra algorithm
 
-func (g *Graph) findPathWithDijkstra(startNode, endNode *Node) string {
+func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) string {
 
 	distances := make(map[int]int)
 	backtrace := make(map[int]int)
 
 	pq := NewPqueue()
 
-	distances[startNode.id] = 0
+	// initialize the distance of the source node as 0
+	distances[startNodeID] = 0
 
+	// and the other distances to MAXINT
 	for _, v := range g.nodes {
-		if v.id != startNode.id {
+		if v.id != startNodeID {
 			distances[v.id] = MAXINT
 		}
 	}
 
 	// We add our starting node to the priority queue to get things kicked off
-	pq.Insert(startNode, 0)
+	pq.Insert(g.nodes[startNodeID], 0)
 
 	// We access the first element in the queue and start checking its neighbors,
 	// which we find using the neighbors list we made at the very beginning. We
@@ -34,8 +36,8 @@ func (g *Graph) findPathWithDijkstra(startNode, endNode *Node) string {
 		for _, neighbor := range g.neighborsList[currentNode.id] {
 			newDistance := distances[currentNode.id] + neighbor.weight
 
-			// Then we check if the calculated time is less than the
-			// time we currently have on file for this neighbor. If it is,
+			// Then we check if the calculated distance is less than the
+			// distance we currently have on file for this neighbor. If it is,
 			// then we update our distances, we add this step to our backtrace,
 			// and we add the neighbor to our priority queue!
 			if newDistance < distances[neighbor.toNode.id] {
@@ -52,34 +54,21 @@ func (g *Graph) findPathWithDijkstra(startNode, endNode *Node) string {
 	// object to find out just how long it will take to get there,
 	// knowing that it’s the quickest route.
 
-	path := NewQueue()
-	path.Push(endNode)
+	lastStep := g.nodes[endNodeID]
+	output := ""
 
-	lastStep := endNode
-
-	for lastStep.id != startNode.id {
-		path.Prepend(g.nodes[backtrace[lastStep.id]])
+	for lastStep.id != startNodeID {
+		output = fmt.Sprintf("> %v ", lastStep.name) + output
 		lastStep = g.nodes[backtrace[lastStep.id]]
 	}
+	output = fmt.Sprintf("%v ", g.nodes[startNodeID].name) + output
 
 	// that's it
-	output := ""
-	for !path.isEmpty() {
-		node := path.DequeueFirst()
-		output = output + fmt.Sprintf("> %v ", node.name)
-	}
-	return fmt.Sprintf("Path is '%s' and distance is '%v'\n", output, distances[endNode.id])
+	return fmt.Sprintf("Path is '%s' and distance is '%v'\n", output, distances[endNodeID])
 }
 
 func main() {
-	fullstack = createNode("Fullstack")
-	starbucks = createNode("Starbucks")
-	insomnia = createNode("Insomnia Cookies")
-	cafe = createNode("Cafe Grumpy")
-	dig = createNode("Dig Inn")
-	dubliner = createNode("Dubliner")
-
 	g := NewGraph()
-	g.BuildGraph()
-	fmt.Println(g.findPathWithDijkstra(fullstack, cafe))
+	g.buildGraph("./graphdefinition.json")
+	fmt.Println(g.findPathWithDijkstra(0, 5))
 }
