@@ -18,7 +18,7 @@ type Graph struct {
 	neighborsList      map[int][]Edge
 }
 
-func NewGraph(filename string) *Graph {
+func NewGraph() *Graph {
 	neighbors := make(map[int][]Edge)
 	nodes := make(map[int]*Node)
 
@@ -26,18 +26,19 @@ func NewGraph(filename string) *Graph {
 	return &Graph{nodes, neighbors}
 }
 
-func createNode(name string) *Node {
+/*func createNode(name string) *Node {
 	return &Node{name, 0}
-}
+}*/
 
 //func (g *Graph) addNode(node *Node) {
-func (g *Graph) addNode(nodename string, nodeid int) *Node {
+func (g *Graph) addNode(nodename string, nodeid int) { //*Node {
 
 	node := Node{}
 	node.id = nodeid
+	node.name = nodename
 	g.nodes[node.id] = &node
 	g.neighborsList[node.id] = []Edge{}
-	return &node
+	//return &node
 }
 
 func (g *Graph) addEdge(node1, node2 *Node, weight int) {
@@ -52,9 +53,12 @@ func (g *Graph) buildGraph(filename string) {
 
 	jGraph = ReadJsonGraph(filename)
 	for _, v := range(jGraph.Nodes) {
-		node := g.addNode(v.Name, v.Id)
-		for g := range v.Neighbors {
-			g.addEdge(node, &Node{})
+		g.addNode(v.Name, v.Id)
+	}
+
+	for _, v := range(jGraph.Nodes) {
+		for _, z := range v.Neighbors {
+			g.addEdge(g.nodes[v.Id], g.nodes[z.Id], z.Weight)
 		}
 	}
 }

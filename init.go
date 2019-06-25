@@ -17,7 +17,7 @@ type jsonNode struct {
 
 type jsonNeighbors struct {
 	Id 			int 			`json:"id"`
-	weight		int				`json:"weight"`
+	Weight		int				`json:"weight"`
 }
 
 /*
