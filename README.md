@@ -141,7 +141,7 @@ and the data can be laid out as:
 }
 ```
 
-in Go, a rough implementation may look like:
+On the Go side of things, we will use the following data structures:
 ```go
 type Edge struct {
   toNode  *Node
