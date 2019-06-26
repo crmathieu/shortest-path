@@ -203,6 +203,8 @@ A key part of this approach is maintaining an ordered line of nodes to visit nex
 We’ll start by creating objects to hold our record of the shortest known distances and the steps we took. And we’ll initialize our priority queue:
 
 ```go
+func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) (string, int) {
+
 	distances := make(map[int]int)
 	parent := make(map[int]int)
 	visited := make(map[int]int)
