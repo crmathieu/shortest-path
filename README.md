@@ -186,9 +186,9 @@ _buildGraph_ is in charge of creating the data structure that holds the graph da
 
 ## The Dijkstra Approach
 
-- 1) Move to a node that has not been visited, choosing the closest node to get to first.
-- 2) At that node, check how far each of its neighboring nodes are. Add the neighbor’s weight to the distance it took to get to the node we’re currently on. Keep in mind that we’re calculating the distance to reach those nodes before we visit them.
-- 3) Check whether that calculated distance is shorter than the previously known shortest distance to get to that node. If it is shorter, update our records to reflect the new shortest distance. We’ll also add this node to our line of nodes to visit next. That line will be **arranged in order of shortest calculated distance** to reach.
+- Move to a node that has not been visited, choosing the closest node to get to first.
+- At that node, check how far each of its neighboring nodes are. Add the neighbor’s weight to the distance it took to get to the node we’re currently on. Keep in mind that we’re calculating the distance to reach those nodes before we visit them.
+- Check whether that calculated distance is shorter than the previously known shortest distance to get to that node. If it is shorter, update our records to reflect the new shortest distance. We’ll also add this node to our line of nodes to visit next. That line will be **arranged in order of shortest calculated distance** to reach.
 
 By calculating and continually updating the shortest distance to reach each node on the graph, the algorithm compiles the shortest path to the endpoint.
 
