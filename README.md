@@ -286,4 +286,4 @@ Now we can leave the algorithm to do its work. Once it reaches the end of our qu
 }
 ```
 
-There you have it! The shortest path is to take Dubliner to Insomnia Cookies to Cafe Grumpy, in 14 minutes.
+There you have it! The shortest path is to do : **Fullstack > Dubliner > Insomnia Cookies > Cafe Grumpy** with a total distance of **14**
