@@ -174,9 +174,10 @@ Then from reading the graphdefinition.json file which contains the relationship 
 The code is
 ```go
 func main() {
-	g := NewGraph()
-	g.buildGraph("./graphdefinition.json")
-	fmt.Println(g.findPathWithDijkstra(0, 5))
+  g := NewGraph()
+  g.buildGraph("./graphdefinition.json")
+  path, distance := g.findPathWithDijkstra(0, 5)
+  fmt.Printf("Shortest Path from '%s' to '%s' is '%s' and distance is '%v'\n", g.nodes[0].name, g.nodes[5].name, path, distance)
 }
 ```
 Here we use nodeId 0 and 5, which according to our graphdefinition represent respectively the "fullstack" and "Cafe Grumpy" nodes. We find the value **14** which corresponds to the shortest possible distance.
