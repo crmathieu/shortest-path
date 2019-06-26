@@ -52,10 +52,10 @@ func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) (string, int) {
 	}
 
 	// Once the end of our queue has been reached, all we have to do
-	// is look through our parent to find the steps that will lead
-	// us to the target node. We can look up target node in our 'distances'
-	// object to find out just how long it will take to get there,
-	// knowing that it’s the quickest route.
+	// is look through our parent map to find the steps that lead to 
+	// the target node. We can look up target node in our 'distances'
+	// map to find out just how long it will take to get there, knowing 
+	// that it’s the quickest route.
 
 	lastStep := g.nodes[endNodeID]
 	output := ""
