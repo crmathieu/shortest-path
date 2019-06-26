@@ -10,7 +10,7 @@ func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) string {
 
 	distances := make(map[int]int)
 	backtrace := make(map[int]int)
-
+	visited := make(map[int]int)
 	pq := NewPqueue()
 
 	// initialize the distance of the source node as 0
@@ -32,18 +32,21 @@ func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) string {
 	for !pq.isEmpty() {
 		shortestStep := pq.DequeueFirst()
 		currentNode := shortestStep.node
+		visited[currentNode.id] = 1
 
 		for _, neighbor := range g.neighborsList[currentNode.id] {
-			newDistance := distances[currentNode.id] + neighbor.weight
+			if _, ok := visited[neighbor.toNode.id]; !ok {			
+				newDistance := distances[currentNode.id] + neighbor.weight
 
-			// Then we check if the calculated distance is less than the
-			// distance we currently have on file for this neighbor. If it is,
-			// then we update our distances, we add this step to our backtrace,
-			// and we add the neighbor to our priority queue!
-			if newDistance < distances[neighbor.toNode.id] {
-				distances[neighbor.toNode.id] = newDistance
-				backtrace[neighbor.toNode.id] = currentNode.id
-				pq.Insert(neighbor.toNode, newDistance)
+				// Then we check if the calculated distance is less than the
+				// distance we currently have on file for this neighbor. If it is,
+				// then we update our distances, we add this step to our backtrace,
+				// and we add the neighbor to our priority queue!
+				if newDistance < distances[neighbor.toNode.id] {
+					distances[neighbor.toNode.id] = newDistance
+					backtrace[neighbor.toNode.id] = currentNode.id
+					pq.Insert(neighbor.toNode, newDistance)
+				}
 			}
 		}
 	}
