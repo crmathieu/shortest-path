@@ -1,5 +1,7 @@
 package main
 
+// Stack
+
 type StackItem struct {
 	Value int
 }
