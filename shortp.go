@@ -9,7 +9,7 @@ import (
 func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) (string, int) {
 
 	distances := make(map[int]int)
-	parent := make(map[int]int)
+	backtrace := make(map[int]int)
 	visited := make(map[int]int)
 	pq := NewPqueue()
 
@@ -40,11 +40,11 @@ func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) (string, int) {
 
 				// Then we check if the calculated distance is less than the
 				// distance we currently have on file for this neighbor. If it is,
-				// then we update our distances, we add this step to our parent,
+				// then we update our distances, we add this step to our backtrace,
 				// and we add the neighbor to our priority queue!
 				if newDistance < distances[neighbor.toNode.id] {
 					distances[neighbor.toNode.id] = newDistance
-					parent[neighbor.toNode.id] = currentNode.id
+					backtrace[neighbor.toNode.id] = currentNode.id
 					pq.Insert(neighbor.toNode, newDistance)
 				}
 			}
@@ -52,7 +52,7 @@ func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) (string, int) {
 	}
 
 	// Once the end of our queue has been reached, all we have to do
-	// is look through our parent map to find the steps that lead to 
+	// is look through our backtrace map to find the steps that lead to 
 	// the target node. We can look up target node in our 'distances'
 	// map to find out just how long it will take to get there, knowing 
 	// that it’s the quickest route.
@@ -62,7 +62,7 @@ func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) (string, int) {
 
 	for lastStep.id != startNodeID {
 		output = fmt.Sprintf("> %v ", lastStep.name) + output
-		lastStep = g.nodes[parent[lastStep.id]]
+		lastStep = g.nodes[backtrace[lastStep.id]]
 	}
 	output = fmt.Sprintf("%v ", g.nodes[startNodeID].name) + output
 

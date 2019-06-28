@@ -194,7 +194,7 @@ By calculating and continually updating the shortest distance to reach each node
 
 Let’s try those steps out. Of all the nodes, we only know the distance it takes to get to one — Fullstack — because the distance is 0. It’s where we’re starting! From there, we check the neighboring nodes. We see that Dubliner has a weight of 2, and so we add that to the distance it took to get where we are, which is 0. We do the same for Starbucks and Dig Inn. Since these distances are shorter than any distance we previously knew, we record the distance it takes to get to these nodes as 2, 6, and 7, respectively, and we add them to our line of nodes to visit next. We also update our record of the last node we were on when we got to those now-shortest paths, adding an entry for each one and pointing them toward Fullstack. This is how we’ll trace our path back to where we started.
 
-We move to another node, the one first up in our line. Right now that’s the Dubliner. Now, here’s where the algorithm starts to reveal its glory. If we check the neighboring nodes, we see that the distance it takes to get to Starbucks is 5. We got that by adding the distance it took us to to the Dubliner (2) plus the weight of the edge between the Dubliner and Starbucks (3). Now let’s check our records. The shortest distance we have on file for Starbucks is 6. Wait, that’s longer! We just found a faster route to Starbucks! Now we can update two sets of records: First, we update the shortest known distance to Starbucks. Then we update our parent trace, changing our entry for Starbucks to point to Dubliner — the node we were on when we found the shortest distance to reach it.
+We move to another node, the one first up in our line. Right now that’s the Dubliner. Now, here’s where the algorithm starts to reveal its glory. If we check the neighboring nodes, we see that the distance it takes to get to Starbucks is 5. We got that by adding the distance it took us to to the Dubliner (2) plus the weight of the edge between the Dubliner and Starbucks (3). Now let’s check our records. The shortest distance we have on file for Starbucks is 6. Wait, that’s longer! We just found a faster route to Starbucks! Now we can update two sets of records: First, we update the shortest known distance to Starbucks. Then we update our backtrace map, changing our entry for Starbucks to point to Dubliner — the node we were on when we found the shortest distance to reach it.
 
 A key part of this approach is maintaining an ordered line of nodes to visit next. To set up that part of the algorithm, we’ll create a priority queue. A regular queue is first-in, first-out. A priority queue, however, doesn’t just place elements at the end of the line. It places them in order based on the weight each element has. Think of a regular queue as a grocery store line and a priority queue as the intake of an emergency room. Our priority queue will use 2 methods: _**Insert**_ that will place a new element in the queue based on its priority (here the distance), and _**DequeueFirst**_ that removes the first element (the highest priority) from the queue and returns it.
 
@@ -206,7 +206,7 @@ We’ll start by creating objects to hold our record of the shortest known dista
 func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) (string, int) {
 
 	distances := make(map[int]int)
-	parent := make(map[int]int)
+	backtrace := make(map[int]int)
 	visited := make(map[int]int)
 	pq := NewPqueue()
 ```
@@ -244,18 +244,18 @@ And now we can really get rolling! We access the first element in the queue and 
 		for _, neighbor := range g.neighborsList[currentNode.id] {
 			if _, ok := visited[neighbor.toNode.id]; !ok {			
 ```
-Then if we haven't visited that node yet, we check if the calculated distance is less than the distance we currently have on file for this neighbor. If it is, then we update our distances, we add this step to our parent map, and we add the neighbor to our priority queue!
+Then if we haven't visited that node yet, we check if the calculated distance is less than the distance we currently have on file for this neighbor. If it is, then we update our distances, we add this step to our backtrace map, and we add the neighbor to our priority queue!
 
 ```go
 				newDistance := distances[currentNode.id] + neighbor.weight
 
 				// Then we check if the calculated distance is less than the
 				// distance we currently have on file for this neighbor. If it is,
-				// then we update our distances, we add this step to our parent,
+				// then we update our distances, we add this step to our backtrace,
 				// and we add the neighbor to our priority queue!
 				if newDistance < distances[neighbor.toNode.id] {
 					distances[neighbor.toNode.id] = newDistance
-					parent[neighbor.toNode.id] = currentNode.id
+					backtrace[neighbor.toNode.id] = currentNode.id
 					pq.Insert(neighbor.toNode, newDistance)
 				}
 			}
@@ -263,11 +263,11 @@ Then if we haven't visited that node yet, we check if the calculated distance is
 	}
 ```
 
-Now we can leave the algorithm to do its work. Once it reaches the end of our queue, all we have to do is look through our parent map to find the steps that will lead us to Cafe Grumpy. We can look up Cafe Grumpy in our distances map to find out just how far it will take to get there, knowing that it’s the shortest route.
+Now we can leave the algorithm to do its work. Once it reaches the end of our queue, all we have to do is look through our backtrace map to find the steps that will lead us to Cafe Grumpy. We can look up Cafe Grumpy in our distances map to find out just how far it will take to get there, knowing that it’s the shortest route.
 
 ```go
 	// Once the end of our queue has been reached, all we have to do
-	// is look through our parent map to find the steps that lead to 
+	// is look through our backtrace map to find the steps that lead to 
 	// the target node. We can look up target node in our 'distances'
 	// map to find out just how long it will take to get there, knowing 
 	// that it’s the quickest route.
@@ -277,7 +277,7 @@ Now we can leave the algorithm to do its work. Once it reaches the end of our qu
 
 	for lastStep.id != startNodeID {
 		output = fmt.Sprintf("> %v ", lastStep.name) + output
-		lastStep = g.nodes[parent[lastStep.id]]
+		lastStep = g.nodes[backtrace[lastStep.id]]
 	}
 	output = fmt.Sprintf("%v ", g.nodes[startNodeID].name) + output
 
