@@ -13,8 +13,8 @@ type Edge struct {
 }
 
 type Graph struct {
-	nodes              map[int]*Node
-	neighborsList      map[int][]Edge
+	nodes         map[int]*Node
+	neighborsList map[int][]Edge
 }
 
 func NewGraph() *Graph {
@@ -37,19 +37,19 @@ func (g *Graph) addEdge(node1, node2 *Node, weight int) {
 	g.neighborsList[node2.id] = append(g.neighborsList[node2.id], Edge{node1, weight})
 }
 
-var jGraph *jsonGraph 
+var jGraph *jsonGraph
 
 func (g *Graph) buildGraph(filename string) {
 
 	jGraph = ReadJsonGraph(filename)
 
 	// build nodes map
-	for _, v := range(jGraph.Nodes) {
+	for _, v := range jGraph.Nodes {
 		g.addNode(v.Name, v.Id)
 	}
 
 	// then build neighborsList map
-	for _, v := range(jGraph.Nodes) {
+	for _, v := range jGraph.Nodes {
 		for _, z := range v.Neighbors {
 			g.addEdge(g.nodes[v.Id], g.nodes[z.Id], z.Weight)
 		}

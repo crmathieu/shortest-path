@@ -35,7 +35,7 @@ func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) (string, int) {
 		visited[currentNode.id] = 1
 
 		for _, neighbor := range g.neighborsList[currentNode.id] {
-			if _, ok := visited[neighbor.toNode.id]; !ok {			
+			if _, ok := visited[neighbor.toNode.id]; !ok {
 				newDistance := distances[currentNode.id] + neighbor.weight
 
 				// Then we check if the calculated distance is less than the
@@ -52,9 +52,9 @@ func (g *Graph) findPathWithDijkstra(startNodeID, endNodeID int) (string, int) {
 	}
 
 	// Once the end of our queue has been reached, all we have to do
-	// is look through our backtrace map to find the steps that lead to 
+	// is look through our backtrace map to find the steps that lead to
 	// the target node. We can look up target node in our 'distances'
-	// map to find out just how long it will take to get there, knowing 
+	// map to find out just how long it will take to get there, knowing
 	// that it’s the quickest route.
 
 	lastStep := g.nodes[endNodeID]
